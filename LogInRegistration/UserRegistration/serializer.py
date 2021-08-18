@@ -4,6 +4,6 @@ from .models import UserData
 
 '''This will serialize the complex data'''
 class UserSerializer(serializers.ModelSerializer):
- class Meta:
-  model = UserData
-  fields = "__all__"
+    class Meta:
+        model = UserData
+        fields = "__all__"
