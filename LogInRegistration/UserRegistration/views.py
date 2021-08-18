@@ -6,6 +6,10 @@ from django.contrib.auth import authenticate
 from django.core.mail import EmailMultiAlternatives
 from UserRegistration.utils import encode_token,decode_token,encode_token_userid
 from django.db.models import Q
+from LogInRegistration.log import get_logger
+
+# Logger configuration
+logger = get_logger()
 
 
 class Index(APIView):
@@ -61,11 +65,14 @@ class Register(APIView):
             msg.attach_alternative(html_content,"text/html")
             msg.send()
             return Response({"message":"CHECK EMAIL for verification"})
-        except ValueError:
+        except ValueError as e:
+            logger.exception(e)
             return Response({"message": 'Invalid Input'}, status=status.HTTP_400_BAD_REQUEST)
-        except ValidationError:
+        except ValidationError as e:
+            logger.exception(e)
             return Response({'message': 'Invalid Input'}, status=status.HTTP_400_BAD_REQUEST)  
         except Exception as e:
+            logger.exception(e)
             return Response({"msg": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -86,13 +93,17 @@ class LogIn(APIView):
             if user is None:
                 return Response({"msg": 'Wrong username or password'}, status=status.HTTP_400_BAD_REQUEST)
             return Response({"msg": "Loggedin Successfully", 'data' : {'username': username,'token': token}}, status=status.HTTP_200_OK)
-        except ValueError:
+        except ValueError as e:
+            logger.exception(e)
             return Response({"message": 'Invalid Input'}, status=status.HTTP_400_BAD_REQUEST)
-        except ValidationError:
+        except ValidationError as e:
+            logger.exception(e)
             return Response({'message': "wrong credentials"}, status=status.HTTP_400_BAD_REQUEST) 
-        except AuthenticationFailed:
+        except AuthenticationFailed as e:
+            logger.exception(e)
             return Response({'message': 'Authentication Failed'}, status=status.HTTP_400_BAD_REQUEST) 
-        except Exception:
+        except Exception as e:
+            logger.exception(e)
             return Response({"msg": "wrong credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -112,4 +123,5 @@ class VerifyEmail(APIView):
                 return Response({"message":"Email Verified and Registered successfully"},status=status.HTTP_200_OK)
             return Response({"message":"Try Again......Wrong credentials"})
         except Exception as e:
+            logger.exception(e)
             return Response({"message":str(e)})
