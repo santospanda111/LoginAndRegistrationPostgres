@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from django.core.mail import EmailMultiAlternatives
 from UserRegistration.utils import encode_token,decode_token,encode_token_userid
 from django.db.models import Q
-from LogInRegistration.log import get_logger
+from log import get_logger
 
 # Logger configuration
 logger = get_logger()

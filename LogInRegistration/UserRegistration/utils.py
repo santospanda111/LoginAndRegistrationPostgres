@@ -1,7 +1,7 @@
 import jwt
 from django.conf import settings
 from rest_framework.response import Response
-from LogInRegistration.log import get_logger
+from log import get_logger
 
 # Logger configuration
 logger = get_logger()
