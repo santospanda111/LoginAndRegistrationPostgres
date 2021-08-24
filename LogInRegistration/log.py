@@ -11,7 +11,7 @@ def get_logger():
     # Set logging format
     formatter = logging.Formatter('%(asctime)s : %(name)s : ', datefmt='%m/%d/%Y %I:%M:%S %p')
     # Adding exception.log file
-    file_handler = logging.FileHandler('logfile.log',mode='rw')
+    file_handler = logging.FileHandler('logfile.log',mode='a')
     file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
